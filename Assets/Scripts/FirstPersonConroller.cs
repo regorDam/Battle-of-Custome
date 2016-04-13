@@ -30,28 +30,37 @@ public class FirstPersonConroller : NetworkBehaviour
     bool dead;
     bool m_focus = true;
     string nameknight = "knight_FBX_Walk";
-    string namedragon = "Dragon_FBX_WALK";
+    string namedracon = "Dragon_FBX_WALK";
     string nameObj;
     int type;
+    public GameObject bodyK, bodyD;
+    GameObject body;
 
     void Awake()
     {
-        
-        
+
+
         if (GameObject.FindGameObjectsWithTag("Player").Length % 2 == 0)
         {
             type = 1;
             nameObj = nameknight;
-            transform.Find(namedragon).gameObject.SetActive(false);
+            transform.Find(namedracon).gameObject.SetActive(false);
+            //body = Instantiate(bodyK, bodyK.transform.position, bodyK.transform.rotation) as GameObject;
+
+            //body.transform.localPosition = bodyK.transform.localPosition;
+            //body.transform.localRotation = bodyK.transform.localRotation;
         }
         else
         {
             type = 2;
-            nameObj = namedragon;
+            nameObj = namedracon;
+            //body = Instantiate(bodyD, bodyD.transform.position, bodyD.transform.rotation) as GameObject;
             transform.Find(nameknight).gameObject.SetActive(false);
         }
 
-
+      
+        //body = Instantiate(Resources.Load("Prefabs/Player/" + nameObj, typeof(GameObject))) as GameObject;
+        //body.transform.SetParent(transform);
 
         anim = transform.Find(nameObj).GetComponent<Animator>();
         GetComponent<NetworkAnimator>().animator = anim;
@@ -61,6 +70,18 @@ public class FirstPersonConroller : NetworkBehaviour
     {
         cameraT = transform.Find("Main Camera").transform;
         rgb = GetComponent<Rigidbody>();
+        //body.transform.localPosition = new Vector3(0.0f, -1.0f, -0.03f);
+       // body.transform.rotation = transform.rotation;
+       /*
+        if(type == 1)
+        {
+            body.transform.localRotation = bodyK.transform.localRotation;
+        }
+        else
+        {
+            body.transform.localRotation = bodyD.transform.localRotation;
+        }
+        */
     }
 	
 	void Update ()
@@ -169,7 +190,7 @@ public class FirstPersonConroller : NetworkBehaviour
         grounded = false;
     }
 
-        void FixedUpdate()
+    void FixedUpdate()
     {
         rgb.MovePosition(rgb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
